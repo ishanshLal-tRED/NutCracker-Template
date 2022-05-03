@@ -1,0 +1,22 @@
+*.*
+out
+
+!.gitignore
+!**/README.md
+
+# folders
+!assets/executables/msdf-atlas-gen.exe
+!assets/fonts/*[.ttf]
+!assets/fonts/charset.txt
+!assets/fonts_atlas/*[.png, .json]
+!assets/textures/**/*[.png, .jpg, jpeg, .bmp]
+!assets/shaders/**/*[.glsl]
+!assets/scripts/**/*[.ps1]
+
+!NutCracker/**/*[.cppm, .ixx, .cpp, .cxx, .hpp, .hxx, .c, .h]
+!Prototype/**/*[.cppm, .ixx, .cpp, .cxx, .hpp, .hxx, .c, .h]
+!Testbench/**/*[.cppm, .ixx, .cpp, .cxx, .hpp, .hxx, .c, .h]
+
+!**/CMakeLists.txt
+!CMakePresets.json
+!vcpkg.json
