@@ -80,8 +80,24 @@ namespace NutCracker {
 	};
 };
 
+import <fmt/format.h>;
+
 export 
 inline std::ostream& operator<<(std::ostream& os, const NutCracker::Event &e)
 {
-	return os << e.ToString();
+	return os << fmt::format ("from Wnd:{:d}, {:s}", e.WindowNum, e.ToString());
 }
+export template <>
+struct fmt::v8::detail::fallback_formatter<NutCracker::Event>
+{
+    constexpr auto parse(format_parse_context& ctx)
+    {
+        return ctx.end();
+    }
+
+    template <typename FormatContext>
+    auto format(const NutCracker::Event& e, FormatContext& ctx)
+    {
+        return fmt::format_to(ctx.out(), "from Wnd:{:d}, {:s}", e.WindowNum, e.ToString());
+    }
+};

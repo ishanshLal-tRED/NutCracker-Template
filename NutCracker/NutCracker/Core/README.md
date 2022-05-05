@@ -2,6 +2,7 @@ Mainly for everything that is required for aplication to work (and is not tied t
 
 *- Different types of Events {App, Key, Mouse}
 *- Translated Input Codes (mouse, keyboard etc.)
-*- Logging
+*- Logging (needs static and runtime asserts)
 *- Input
 *- OSUtils (like file opening dialog) <br>
+- Platform detection

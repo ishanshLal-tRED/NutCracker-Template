@@ -5,6 +5,7 @@ import <cstdio>;
 import <source_location>;
 import <filesystem>;
 
+// TODO: add asserts and platform, build type detection code etc.
 #define LOG_raw(...)		{ fmt::print(stderr, __VA_ARGS__); }
 #define LOG_trace(...)		{ fmt::print(stderr, " \n[LOG_TRACE L{:d}\tF: {:s}]\t{:s}", std::source_location::current ().line (), std::filesystem::relative(std::source_location::current ().file_name (), PROJECT_ROOT_LOCATION).generic_string(), fmt::format(__VA_ARGS__)); }
 #define LOG_debug(...)		{ fmt::print(stderr, " \n[LOG_DEBUG L{:d}\tF: {:s}]\t{:s}", std::source_location::current ().line (), std::filesystem::relative(std::source_location::current ().file_name (), PROJECT_ROOT_LOCATION).generic_string(), fmt::format(__VA_ARGS__)); }

@@ -15,6 +15,8 @@ message("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 message("||||||||||||||||||||||| THIS IS ${CMAKE_CXX_COMPILER_ID} \tCOMPILER ||||||||||||||||||||||")
 message("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||")
 
+add_compile_definitions(NTKR_WINDOWS=1 NTKR_DEBUG=1)
+
 set (TARGET_SHARED "" CACHE INTERNAL "Shared library across builds")
 
 add_subdirectory(NutCracker)

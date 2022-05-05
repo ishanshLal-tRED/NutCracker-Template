@@ -8,7 +8,7 @@
 #endif
 
 // use the power of lambdas to forward member function (ex. register it as callback)
-#define NUTCRACKER_BIND_FUNCTION (fn) [this] (auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+#define NTKR_BIND_FUNCTION(fn) [this](auto&&... args)->decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
 #define MIN(x,y) (x > y ? y :  x)
 #define MAX(x,y) (x > y ? x :  y)

@@ -5,6 +5,7 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(Vulkan REQUIRED)
 
 set(THIS_LIB "_nutcracker_")
 file(GLOB HEADER_COLLECTION "NutCracker/**.h" "NutCracker/**.hpp" "NutCracker/**.hxx")
@@ -13,9 +14,9 @@ add_library(${THIS_LIB}
     # Headers
         ${HEADER_COLLECTION}
     # Source
-        "NutCracker/Base/App.ixx"
+        "NutCracker/Base/AppInstance.ixx"
         "NutCracker/Base/Event.ixx"
-        "NutCracker/Base/Window.ixx"
+        "NutCracker/Base/Window.ixx" "src/Platform/Window.cppm" 
 
         ##"NutCracker/Core/Logging.hxx"
         "NutCracker/Core/LoggingExtn.ixx"
@@ -30,10 +31,18 @@ add_library(${THIS_LIB}
 
         #"NutCracker/Utils/HelperMacros.hxx"
         "NutCracker/Utils/Random.ixx"
+        
+        "NutCracker/Example/Skeleton.ixx"
+        "NutCracker/Example/MultipleWindowed.ixx" 
+        "NutCracker/Example/VulkanExample.ixx" 
+        "NutCracker/Example/VulkanExample.cppm"
+
+        "src/Platform/Windows/WindowImpl.ixx"
 
         "NutCracker/NutCracker_Base.ixx"
         "NutCracker/NutCracker_Events.ixx"
-    )
+        "NutCracker/NutCracker_Examples.ixx" 
+     "NutCracker/Utils/Vulkan/DebugMarkers.ixx" "src/Platform/Windows/platformInputTranslation.ixx")
 
 target_include_directories(${THIS_LIB}
     PUBLIC

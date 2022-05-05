@@ -4,7 +4,8 @@ import <ctime>;
 
 #include <Core/Logging.hxx>
 
-export module NutCracker.Base.App;
+export import NutCracker.Base.Event;
+export module NutCracker.Base.AppInstance;
 
 namespace NutCracker
 {
@@ -35,11 +36,11 @@ namespace NutCracker
 		};
 		
 	public: // public interface
-		inline static void Setup (const std::span<char*> &argument_list) { s_TheAppInstance->setup (argument_list); }
+		inline static void Setup (const std::span<char*> argument_list) { s_TheAppInstance->setup (argument_list); }
 		inline static void InitializeVk () { s_TheAppInstance->initializeVk (); }
 		inline static void Run () {
 			UpdateTime ();
-			while (s_TheAppInstance->keep_context_running ()) {
+			while (s_TheAppInstance->keepContextRunning ()) {
 				auto [update_latency, render_latency] = UpdateTime ();
 				s_TheAppInstance->update (update_latency), s_TheAppInstance->render(render_latency);
 			}
@@ -51,14 +52,14 @@ namespace NutCracker
 		inline static const double GetUpdateTimestamp() { return double(s_TheAppInstance->m_UpdateTimestamp) / CLOCKS_PER_SEC; }
 
 	protected: // required defined
-		virtual void setup (const std::span<char*> &argument_list) = 0;
+		virtual void setup (const std::span<char*> argument_list) = 0;
 		virtual void initializeVk () = 0;
 		virtual void update (double update_latency) = 0;
 		virtual void render (double render_latency) = 0;
 		virtual void terminateVk () = 0;
 		virtual void cleanup () = 0;
-		virtual void on_event () = 0;
-		virtual bool keep_context_running () = 0;
+		virtual void onEvent (Event&) = 0;
+		virtual bool keepContextRunning () = 0;
 	private:
 		clock_t m_UpdateTimestamp = clock(), m_RenderTimestamp = clock();
 	};
