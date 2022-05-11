@@ -66,9 +66,9 @@ namespace NutCracker::Example {
 		void createSynchronizationPrimitives (); // & objects
 		uint32_t findMemoryType (uint32_t type_filter, VkMemoryPropertyFlags properties);
 		void setupDepthStencil ();
-		void setupRenderPass ();
+		void setupRenderPass (const bool add_depth = false);
 		void createPipelineCache ();
-		void setupFrameBuffer ();
+		void setupFrameBuffer (const bool has_depth = false);
 
 		void submitFrame ();
 
@@ -177,7 +177,7 @@ struct VulkanContext {
 			VkColorSpaceKHR ColorSpace;
 			VkExtent2D ImageExtent;
 		} Swapchain;
-		// List of available frame buffers (same as number of swap chain images)
+		// List of available frame buffers (same as number of swapchain images)
 		std::vector<VkFramebuffer> Framebuffers;
 
 		// Descriptor set pool
