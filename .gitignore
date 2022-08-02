@@ -6,6 +6,8 @@ out
 
 # folders
 !assets/executables/msdf-atlas-gen.exe
+!assets/executables/msdf-gen.exe
+!assets/executables/example.bat
 !assets/fonts/*[.ttf]
 !assets/fonts/charset.txt
 !assets/fonts_atlas/*[.png, .json]

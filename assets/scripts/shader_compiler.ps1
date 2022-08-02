@@ -1,12 +1,12 @@
-Param(
-    [Parameter(Mandatory,
+Param (
+    [Parameter (Mandatory,
     HelpMessage="Enter one or more shader files to compile with spir-v (Output file will be [filename].sprv)")]
     [string[]]
     $Files
 )
 
 $VK_SDK = $env:VULKAN_SDK
-$GLSLC = "$VK_SDK/Bin32/glslc.exe"
+$GLSLC = "$VK_SDK/Bin/glslc.exe"
 $Files | ForEach{
     $object = (Get-Item -Path "$_")
     $file_name = $object.BaseName

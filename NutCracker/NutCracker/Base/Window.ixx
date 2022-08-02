@@ -4,6 +4,7 @@ import <limits>;
 import <functional>;
 
 #include <Core/Logging.hxx>
+#include <Nutcracker/Utils/HelperMacros.hxx>;
 
 export import NutCracker.Base.Event;
 
@@ -11,7 +12,7 @@ export module NutCracker.Base.Window;
 
 // map is less memory intensive than unordered
 template <> struct std::less<void*> {
-    bool operator()(const void* a, const void* b) const { return uintptr_t (a) < uintptr_t (b); }
+    bool operator () (const void* a, const void* b) const { return uintptr_t (a) < uintptr_t (b); }
 };
 static std::map <void*, uint8_t, std::less<void*>> s_WindowToAssignedNum;
 
@@ -28,9 +29,8 @@ namespace NutCracker {
 	class Window
 	{
 	public:
-		using EventCallbackFn = std::function<void(Event&)>;
-		//using EventCallbackFn = void(*)(Event&);
-		static constexpr uint8_t InvalidWindow = std::numeric_limits<uint8_t>::max();
+		using EventCallbackFn = std::function<void (Event&)>;
+		static constexpr uint8_t InvalidWindow = std::numeric_limits<uint8_t>::max ();
 
 		virtual ~Window () = default;
 		
@@ -44,8 +44,9 @@ namespace NutCracker {
 
 		// Make window as current context
 		virtual void SetAsTarget () const = 0;
-		// Swap buffers and poll event
-		virtual void Update() = 0;
+		// Swap buffers and poll for event
+		virtual void Update () = 0;
+		virtual void PollForEvents () = 0;
 
 		virtual const uint32_t GetWidth () const = 0;
 		virtual const uint32_t GetHeight () const = 0;
@@ -53,6 +54,11 @@ namespace NutCracker {
 		virtual const std::pair<uint32_t, uint32_t> GetFramebufferSize () const = 0;
 
 		// Window attributes
+		template<typename Client> 
+		void SetEventCallbackCLient (Client* in) {
+			SetEventCallback (NTKR_BIND_FUNCTION(in, onEvent));
+			THROW_CORE_critical ("function untested, onEvent concept needs to be implemented too");
+		}
 		virtual void SetEventCallback (const EventCallbackFn& callback) = 0;
 		virtual void SetVSync (const bool enabled) = 0;
 		virtual const bool IsVSync () const = 0;
@@ -61,10 +67,10 @@ namespace NutCracker {
 
 		virtual void* GetNativeWindow () const = 0;
 
-		static Window* Create (const WindowProps& props = WindowProps());
+		static Window* Create (const WindowProps& props = WindowProps ());
 
 	protected:
-		// only numeric_limits<uint8_t>::max() (aka 0-254) allowed
+		// only numeric_limits<uint8_t>::max () (aka 0-254) allowed
 		static void AssignWindowNum (Window* in/* = this*/) {
 			void* handle = in->GetNativeWindow ();
 			if (s_WindowToAssignedNum.find (handle) != s_WindowToAssignedNum.end ())

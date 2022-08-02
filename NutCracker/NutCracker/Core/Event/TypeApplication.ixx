@@ -14,18 +14,18 @@ namespace NutCracker {
 	{
 	public:
 		WindowResizeEvent (const uint8_t win_num, uint32_t width, uint32_t height)
-			: Event (win_num), m_Width(width), m_Height(height) {}
+			: Event (win_num), m_Width (width), m_Height (height) {}
 
-		inline uint32_t GetWidth() const { return m_Width; }
-		inline uint32_t GetHeight() const { return m_Height; }
+		inline uint32_t   GetWidth  () const { return m_Width; }
+		inline uint32_t   GetHeight () const { return m_Height; }
 
-		std::string ToString() const override
+		const std::string ToString  () const override
 		{
-			return fmt::format("WindowResizeEvent: {:d}, {:d}", m_Width, m_Height);
+			return fmt::format ("WindowResizeEvent: {:d}, {:d}", m_Width, m_Height);
 		}
 
-		EVENT_CLASS_TYPE(WindowResize)
-		EVENT_CLASS_CATEGORY(EventCategory::APPLICATION)
+		EVENT_CLASS_TYPE (WindowResize)
+		EVENT_CLASS_CATEGORY (EventCategory::APPLICATION)
 	private:
 		uint32_t m_Width, m_Height;
 	};
@@ -36,8 +36,8 @@ namespace NutCracker {
 		WindowCloseEvent (const uint8_t win_num)
 			: Event (win_num) {}
 
-		EVENT_CLASS_TYPE(WindowClose)
-		EVENT_CLASS_CATEGORY(EventCategory::APPLICATION)
+		EVENT_CLASS_TYPE (WindowClose)
+		EVENT_CLASS_CATEGORY (EventCategory::APPLICATION)
 	};
 	export
 	class AppTickEvent : public Event
@@ -46,8 +46,8 @@ namespace NutCracker {
 		AppTickEvent (const uint8_t win_num)
 			: Event (win_num) {}
 
-		EVENT_CLASS_TYPE(AppTick)
-		EVENT_CLASS_CATEGORY(EventCategory::APPLICATION)
+		EVENT_CLASS_TYPE (AppTick)
+		EVENT_CLASS_CATEGORY (EventCategory::APPLICATION)
 	};
 	export
 	class AppUpdateEvent : public Event
@@ -56,8 +56,8 @@ namespace NutCracker {
 		AppUpdateEvent (const uint8_t win_num)
 			: Event (win_num) {}
 
-		EVENT_CLASS_TYPE(AppUpdate)
-		EVENT_CLASS_CATEGORY(EventCategory::APPLICATION)
+		EVENT_CLASS_TYPE (AppUpdate)
+		EVENT_CLASS_CATEGORY (EventCategory::APPLICATION)
 	};
 	export
 	class AppRenderEvent : public Event
@@ -66,7 +66,7 @@ namespace NutCracker {
 		AppRenderEvent (const uint8_t win_num)
 			: Event (win_num) {}
 
-		EVENT_CLASS_TYPE(AppRender)
-		EVENT_CLASS_CATEGORY(EventCategory::APPLICATION)
+		EVENT_CLASS_TYPE (AppRender)
+		EVENT_CLASS_CATEGORY (EventCategory::APPLICATION)
 	};
 };

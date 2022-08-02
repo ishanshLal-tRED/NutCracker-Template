@@ -3,7 +3,7 @@ import NutCracker.Base.Window;
 #if NTKR_WINDOWS
 import NutCracker.Windows.WindowImpl;
 #else
-static_assert(false, "platform unsupported");
+static_assert (false, "platform unsupported");
 #endif
 
 // NutCracker::Window* Create (const NutCracker::WindowProps& props) 

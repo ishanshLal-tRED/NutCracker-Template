@@ -1,17 +1,24 @@
-import NutCracker.Base;
-import NutCracker.Events;
-import NutCracker.Examples;
+import NutCracker.Example.VulkanAPP;
 
-#include <NutCracker/Common.hxx>;
+#include <Nutcracker/Core/Logging.hxx>;
 
+import <span>;
 import <iostream>;
-int main (int argc, char* argv []) {
-	using APP = NutCracker::Example::VulkanExample;
-	new APP;
-	APP::InitializeVk ();
-	APP::Setup (std::span<char*>(argv, argc));
-	APP::Run ();
+
+int main (int argc, const char* argv []) {
+	using APP = NutCracker::Example::VulkanAPP;
+
+	try {
+		new APP;
+		APP::Setup (std::span<const char*> (argv, argc));
+		APP::InitializeVk ();
+		APP::Run ();
+	} catch (const std::exception& e) {
+		LOG_error ("RUNTIME_ERROR \n\t{}", e.what());
+		return EXIT_FAILURE;
+	}
 	APP::TerminateVk ();
 	APP::Cleanup ();
-	LOG_trace ("TestingStuff {}", NutCracker::Key::B);
+
+	return EXIT_SUCCESS;
 }

@@ -20,14 +20,15 @@ namespace NutCracker {
 		// Make window as current context
 		void SetAsTarget () const override final;
 		// Swap buffers and poll event
-		void Update() override final;
+		void Update () override final;
+		void PollForEvents () override final;
 
 		inline const uint32_t GetWidth  () const override final { return m_Data.Width; }
 		inline const uint32_t GetHeight () const override final { return m_Data.Height; }
 		inline const std::pair<uint32_t, uint32_t> GetFramebufferSize () const {
 			int width, height;
 			glfwGetFramebufferSize (m_Handle, &width, &height);
-			return {uint32_t(width), uint32_t(height)};
+			return {uint32_t (width), uint32_t (height)};
 		}
 
 		// Window attributes
@@ -39,7 +40,7 @@ namespace NutCracker {
 
 		void* GetNativeWindow () const override final;
 	private:
-		static void GLFWErrorCallback(int error, const char* description)
+		static void GLFWErrorCallback (int error, const char* description)
 		{
 			LOG_error ("from GLFW, Code {0}: {1}", error, description);
 		}
@@ -74,9 +75,7 @@ NutCracker::WindowImpl::WindowImpl (const WindowProps& props) {
 	}
 
 	{// Create Window
-	#if defined(NTKR_DEBUG)
-		glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-	#endif
+		glfwWindowHint (GLFW_CLIENT_API, GLFW_NO_API);
 		m_Handle = glfwCreateWindow ((int)props.Width, (int)props.Height, m_Title.c_str (), nullptr, nullptr);
 		s_GLFWWindowCount++;
 
@@ -84,102 +83,102 @@ NutCracker::WindowImpl::WindowImpl (const WindowProps& props) {
 		m_Data.WndNum = GetWindowNumber ();
 	}
 
-	glfwSetWindowUserPointer(m_Handle, &m_Data);
-	SetVSync(true);
+	glfwSetWindowUserPointer (m_Handle, &m_Data);
+	SetVSync (true);
 
 	// Set GLFW callbacks
-	glfwSetWindowSizeCallback(m_Handle, [](GLFWwindow* window, int width, int height)
+	glfwSetWindowSizeCallback (m_Handle, [] (GLFWwindow* window, int width, int height)
 		{
-			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer(window);
+			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer (window);
 			data.Width = width;
 			data.Height = height;
 
-			WindowResizeEvent event(data.WndNum, width, height);
-			data.EventCallback(event);
+			WindowResizeEvent event (data.WndNum, width, height);
+			data.EventCallback (event);
 		});
 
-	glfwSetWindowCloseCallback(m_Handle, [](GLFWwindow* window)
+	glfwSetWindowCloseCallback (m_Handle, [] (GLFWwindow* window)
 		{
-			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer(window);
+			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer (window);
 			WindowCloseEvent event (data.WndNum);
-			data.EventCallback(event);
+			data.EventCallback (event);
 		});
 
-	glfwSetKeyCallback(m_Handle, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+	glfwSetKeyCallback (m_Handle, [] (GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
-			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer(window);
+			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer (window);
 
 			switch (action)
 			{
 				case GLFW_PRESS:
 				{
-					KeyPressedEvent event(data.WndNum, key, 0);
-					data.EventCallback(event);
+					KeyPressedEvent event (data.WndNum, key, 0);
+					data.EventCallback (event);
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					KeyReleasedEvent event(data.WndNum, key);
-					data.EventCallback(event);
+					KeyReleasedEvent event (data.WndNum, key);
+					data.EventCallback (event);
 					break;
 				}
 				case GLFW_REPEAT:
 				{
-					KeyPressedEvent event(data.WndNum, key, 1);
-					data.EventCallback(event);
+					KeyPressedEvent event (data.WndNum, key, 1);
+					data.EventCallback (event);
 					break;
 				}
 			}
 		});
 
-	glfwSetCharCallback(m_Handle, [](GLFWwindow* window, uint32_t keycode)
+	glfwSetCharCallback (m_Handle, [] (GLFWwindow* window, uint32_t keycode)
 		{
-			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer(window);
+			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer (window);
 
-			KeyTypedEvent event(data.WndNum, keycode);
-			data.EventCallback(event);
+			KeyTypedEvent event (data.WndNum, keycode);
+			data.EventCallback (event);
 		});
 
-	glfwSetMouseButtonCallback(m_Handle, [](GLFWwindow* window, int button, int action, int mods)
+	glfwSetMouseButtonCallback (m_Handle, [] (GLFWwindow* window, int button, int action, int mods)
 		{
-			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer(window);
+			struct_WindowData& data = *(struct_WindowData*)glfwGetWindowUserPointer (window);
 
 			switch (action)
 			{
 				case GLFW_PRESS:
 				{
-					MouseButtonPressedEvent event(data.WndNum, button);
-					data.EventCallback(event);
+					MouseButtonPressedEvent event (data.WndNum, button);
+					data.EventCallback (event);
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					MouseButtonReleasedEvent event(data.WndNum, button);
-					data.EventCallback(event);
+					MouseButtonReleasedEvent event (data.WndNum, button);
+					data.EventCallback (event);
 					break;
 				}
 			}
 		});
 
-	glfwSetScrollCallback(m_Handle, [](GLFWwindow* window, double xOffset, double yOffset)
+	glfwSetScrollCallback (m_Handle, [] (GLFWwindow* window, double xOffset, double yOffset)
 		{
-			auto& data = *(struct_WindowData*) glfwGetWindowUserPointer(window);
+			auto& data = *(struct_WindowData*) glfwGetWindowUserPointer (window);
 
-			MouseScrolledEvent event(data.WndNum, (float)xOffset, (float)yOffset);
-			data.EventCallback(event);
+			MouseScrolledEvent event (data.WndNum, (float)xOffset, (float)yOffset);
+			data.EventCallback (event);
 		});
 
-	glfwSetCursorPosCallback(m_Handle, [](GLFWwindow* window, double xPos, double yPos)
+	glfwSetCursorPosCallback (m_Handle, [] (GLFWwindow* window, double xPos, double yPos)
 		{
-			auto& data = *(struct_WindowData*) glfwGetWindowUserPointer(window);
+			auto& data = *(struct_WindowData*) glfwGetWindowUserPointer (window);
 
-			MouseMovedEvent event(data.WndNum, (float)xPos, (float)yPos);
-			data.EventCallback(event);
+			MouseMovedEvent event (data.WndNum, (float)xPos, (float)yPos);
+			data.EventCallback (event);
 		});
 }
 
 NutCracker::WindowImpl::~WindowImpl () {
-	glfwDestroyWindow(m_Handle);
+	glfwDestroyWindow (m_Handle);
 
 	UnAssignWindowNum (this);
 	m_Data.WndNum = Window::InvalidWindow;
@@ -197,6 +196,9 @@ void NutCracker::WindowImpl::SetAsTarget () const {
 // Swap buffers and poll event
 void NutCracker::WindowImpl::Update () {
 	glfwSwapBuffers (m_Handle);
+	PollForEvents ();
+}
+void NutCracker::WindowImpl::PollForEvents () {
 	glfwPollEvents ();
 }
 
@@ -209,5 +211,5 @@ void NutCracker::WindowImpl::MouseCursor (const bool show) const {
 }
 
 void* NutCracker::WindowImpl::GetNativeWindow () const {
-	return (void*)(glfwGetWin32Window (m_Handle)); // hwnd is essentially intptr_t
+	return (void*) (glfwGetWin32Window (m_Handle)); // hwnd is essentially intptr_t
 }

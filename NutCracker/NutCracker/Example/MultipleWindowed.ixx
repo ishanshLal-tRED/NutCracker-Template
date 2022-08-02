@@ -12,8 +12,8 @@ namespace NutCracker::Example {
 	export
 	class MultipleWindowed: public ::NutCracker::BaseInstance {
 	public:
-		void setup (const std::span<char*> argument_list) override { 
-			LOG_trace(std::source_location::current ().function_name ());
+		void setup (const std::span<const char*> argument_list) override { 
+			LOG_trace (std::source_location::current ().function_name ());
 			m_Window1 = Window::Create (WindowProps {
 				.Title = "Vulkan Sandbox 1",
 				.Width = 1280,
@@ -29,21 +29,21 @@ namespace NutCracker::Example {
 		}
 
 		void initializeVk () override 
-			{ /* LOG_trace(std::source_location::current ().function_name ()); */ }
+			{ /* LOG_trace (std::source_location::current ().function_name ()); */ }
 
 		void update (double update_latency) override 
-			{ /* LOG_trace(std::source_location::current ().function_name ()); */ m_Window1->Update(); m_Window2->Update(); }
+			{ /* LOG_trace (std::source_location::current ().function_name ()); */ m_Window1->Update (); m_Window2->Update (); }
 
 		void render (double render_latency) override 
-			{ /* LOG_trace(std::source_location::current ().function_name ()); */ }
+			{ /* LOG_trace (std::source_location::current ().function_name ()); */ }
 
 		void terminateVk () override 
-			{ LOG_trace(std::source_location::current ().function_name ()); }
+			{ LOG_trace (std::source_location::current ().function_name ()); }
 
 		void cleanup () override 
-			{ LOG_trace(std::source_location::current ().function_name ()); delete m_Window1; delete m_Window2; }
+			{ LOG_trace (std::source_location::current ().function_name ()); delete m_Window1; delete m_Window2; }
 
-		void onEvent (Event& e) override {LOG_trace ("{}", e);}
+		void onEvent (Event& e) override { LOG_trace ("{}", e); }
 		bool keepContextRunning () override { static int counter = 10000; /* LOG_trace ("{:s}, counter {:d}", std::source_location::current ().function_name (), counter); */ return counter--; }
 
 	private:
