@@ -10,7 +10,7 @@
 #define	MIN(x,y)	(x > y ? y :  x)
 #define	MAX(x,y)	(x > y ? x :  y)
 #define	ABS(x)		(x > 0 ? x : -x)
-#define	MOD(x,y)	(x - ((float (x) / y) * y))
+#define	MOD(x,y)	(x - (size_t(double (x) / y) * y))
 
 #define EXPAND_MACRO(...) __VA_ARGS__
 
